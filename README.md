@@ -57,7 +57,7 @@ function doPost(e){
   //get the text field
   var text = contents.message.text
   
-  //to remove "/thu" or "/chi", can use replace or other ways
+  //to remove "/collect" or "/spend", can use replace or other ways
   var newText = text.substring(text.indexOf(' ') + 1)
   
   //split category and received/paid amount
@@ -69,27 +69,27 @@ function doPost(e){
   //Replace tr = 6x0, k = 3x0 (Vietnamese way to quick entering amount)
   var number = split[1].replace('tr','000000').replace('k','000')
 
-  //If category is "thu"
-  if(text.includes('/thu')){
+  //If category is "collect"
+  if(text.includes('/collect')){
     //Append a new row at the end of column A, B, C
     const range = ss.appendRow([new Date(),split[0],number])
     //Get total received <setup in cell H1 using SUM function> 
-    const tongthu = ss.getRange("H1").getValue()
+    const totalincome = ss.getRange("H1").getValue()
     
     //Send a message to telegram with link to sheets
-    sendMessage("Tổng thu hiện tại là: " + tongthu + ". Link theo dõi khoản thu nà: <a href='Link to your sheets'>Sheets</a>")
+    sendMessage("Current total revenue is: " + totalincome + ". Link to track revenue: <a href='Link to your sheets'>Sheets</a>")
 
     
   }
-  //Same with "/chi"
-  else if(text.includes('/chi')){
+  //Same with "/spend"
+  else if(text.includes('/spend')){
     const range = ss.appendRow([new Date(),split[0],,number])
-    const tongchi = ss.getRange("H2").getValue()
-    sendMessage("Tổng chi hiện tại là:  " + tongchi + ". Link theo dõi nà: <a href='Link to your sheets'>Sheets</a>")
+    const totalexpenditure = ss.getRange("H2").getValue()
+    sendMessage("Current total expenditure is:  " + totalexpenditure + ". Link to track expenses: <a href='Link to your sheets'>Sheets</a>")
     
   }
   
 } else
-sendMessage("Hình như nhập sai cú pháp " + "/thu loại hình, giá " + "hoặc " + "/chi loại hình, giá " + "rồi," + " hay là muốn theo dõi <a href='Link to your sheets'>Sheets này</a>?")
+sendMessage("Entered incorrect syntax" + "/collect, price " + "or " + "/spend, price " + " Link to track spending <a href='Link to your sheets'>Sheets này</a>?")
 }
 ```
