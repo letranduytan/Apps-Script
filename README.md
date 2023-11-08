@@ -93,3 +93,5 @@ function doPost(e){
 sendMessage("Entered incorrect syntax" + "/collect, price " + "or " + "/spend, price " + " Link to track spending <a href='Link to your sheets'>Sheets này</a>?")
 }
 ```
+![Output](/output.png)
+
