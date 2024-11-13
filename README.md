@@ -10,7 +10,7 @@
 </p>
 
 ## Cài đặt Webhook
-- Trước khi bắt đầu, hãy dán URL của ứng dụng web và chạy hàm `setWebhook`.
+> Trước khi bắt đầu, hãy dán URL của ứng dụng web và chạy hàm `setWebhook`.
 
 **Phương thức:** `https://api.telegram.org/bot<token>/METHOD_NAME`
 
