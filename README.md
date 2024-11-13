@@ -45,7 +45,7 @@ function sendMessage(body){
 }
 ```
 
-### Quản lý Google Sheets từ Telegram
+## Quản lý Google Sheets từ Telegram
 
 #### Mã chức năng `doPost`
 - **Giải thích:** Hàm `doPost` sẽ kết nối đến Google Sheets và xử lý tin nhắn Telegram để ghi dữ liệu thu/chi vào Sheets.
