@@ -1,5 +1,4 @@
-# Connect telegram with google sheets
-
+Expense Management with TelegramBot
 </p>
 <p align="center">
 <a href="https://twitter.com/12dtan" target="_blank"><img src="https://img.shields.io/twitter/follow/12dtan.svg?style=social&label=Follow"></a>
@@ -9,7 +8,8 @@
 <a href="https://instagram/duytan.hh" target="_blank"><img src="https://img.shields.io/badge/Instagram%20-%20%23FF9900"></a>
 </p>
 
-## Cài đặt Webhook
+## Connect telegram with google sheets
+### Cài đặt Webhook
 > Trước khi bắt đầu, hãy dán URL của ứng dụng web và chạy hàm `setWebhook`.
 
 **Phương thức:** `https://api.telegram.org/bot<token>/METHOD_NAME`
