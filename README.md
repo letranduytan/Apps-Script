@@ -9,89 +9,95 @@
 <a href="https://instagram/duytan.hh" target="_blank"><img src="https://img.shields.io/badge/Instagram%20-%20%23FF9900"></a>
 </p>
 
-After pasting webapp url, run function setWebhook first
+### Cài đặt Webhook
+- Trước khi bắt đầu, hãy dán URL của ứng dụng web và chạy hàm `setWebhook`.
 
-Method: https://api.telegram.org/bot<token>/METHOD_NAME
+**Phương thức:** `https://api.telegram.org/bot<token>/METHOD_NAME`
 
 ```javascript
-var webapp = 'put your web app url here' 
-var token = 'put your bot token here'; 
+var webapp = 'điền URL web app của bạn vào đây' 
+var token = 'điền token bot của bạn vào đây'; 
 var url = 'https://api.telegram.org/bot' + token;
-var chatid = 'put your chat id here';
+var chatid = 'điền chat id vào đây';
 ```
 
-For personal chat id, use @userinfobot to get, For group chat id, follow these steps:
-1. Add bot to a new group
-2. Say something mentioning the bot
-3. Paste this url to your browser (with your bot token):
-https://api.telegram.org/bot<token>/getUpdates
-4. Get the chatid
+- Để lấy **chat ID** cá nhân, hãy sử dụng bot @userinfobot. 
+- Để lấy **chat ID** của nhóm, làm theo các bước sau:
+  1. Thêm bot vào một nhóm mới.
+  2. Gửi một tin nhắn trong nhóm có nhắc đến bot.
+  3. Dán URL sau vào trình duyệt (với token bot của bạn): `https://api.telegram.org/bot<token>/getUpdates`.
+  4. Lấy **chat ID** từ kết quả.
 
-## Connect sheets & tell
+### Kết nối Sheets & Telegram
 
+#### Đặt Webhook
 ```javascript
 function setWebhook(){
       var response = UrlFetchApp.fetch(url + '/setWebhook?url=' + webapp) 
       Logger.log(response)
-    }
+}
 ```
 
-## Make bot send message to you (or to group)
-
+#### Gửi tin nhắn từ bot đến bạn (hoặc nhóm)
 ```javascript
 function sendMessage(body){
   var response = UrlFetchApp.fetch(url + '/sendMessage?chat_id=' + chatid + '&text=' + encodeURIComponent(body) + '&parse_mode=HTML')
 }
 ```
 
-## Control sheets from telegram
+### Quản lý Google Sheets từ Telegram
+
+#### Mã chức năng `doPost`
+- **Giải thích:** Hàm `doPost` sẽ kết nối đến Google Sheets và xử lý tin nhắn Telegram để ghi dữ liệu thu/chi vào Sheets.
 
 ```javascript
 function doPost(e){
-  //connect to destinate sheet
-  const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('put your sheet name here')
-  //get the contents from telegram payload
+  // Kết nối đến bảng tính đích
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('điền tên sheet của bạn vào đây')
+  
+  // Lấy nội dung từ payload của Telegram
   var contents = JSON.parse(e.postData.contents)
   
-  //get the text field
+  // Lấy trường văn bản từ tin nhắn
   var text = contents.message.text
   
-  //to remove "/collect" or "/spend", can use replace or other ways
+  // Loại bỏ "/collect" hoặc "/spend" khỏi tin nhắn
   var newText = text.substring(text.indexOf(' ') + 1)
   
-  //split category and received/paid amount
+  // Tách loại chi phí và số tiền
   var split = newText.split(',')
 
-  //if the split could found the amount
+  // Nếu tìm thấy số tiền
   if(split[1] != null){
 
-  //Replace tr = 6x0, k = 3x0 (Vietnamese way to quick entering amount)
+  // Thay thế đơn vị tr = 6 số 0, k = 3 số 0 (cách nhập nhanh số tiền)
   var number = split[1].replace('tr','000000').replace('k','000')
 
-  //If category is "collect"
+  // Nếu loại chi phí là "collect" (thu)
   if(text.includes('/collect')){
-    //Append a new row at the end of column A, B, C
+    // Thêm một dòng mới vào cột A, B, C
     const range = ss.appendRow([new Date(),split[0],number])
-    //Get total received <setup in cell H1 using SUM function> 
+    // Lấy tổng thu nhập <đặt trong ô H1 dùng hàm SUM>
     const totalincome = ss.getRange("H1").getValue()
     
-    //Send a message to telegram with link to sheets
-    sendMessage("Current total revenue is: " + totalincome + ". Link to track revenue: <a href='Link to your sheets'>Sheets</a>")
+    // Gửi tin nhắn đến Telegram với liên kết đến Sheets
+    sendMessage("Tổng thu nhập hiện tại là: " + totalincome + ". Liên kết để theo dõi thu nhập: <a href='Link đến bảng tính của bạn'>Sheets</a>")
 
-    
   }
-  //Same with "/spend"
+  // Tương tự với "/spend" (chi)
   else if(text.includes('/spend')){
-    const range = ss.appendRow([new Date(),split[0],,number])
+    const range = ss.appendRow([new Date(),split[0],number])
     const totalexpenditure = ss.getRange("H2").getValue()
-    sendMessage("Current total expenditure is:  " + totalexpenditure + ". Link to track expenses: <a href='Link to your sheets'>Sheets</a>")
-    
+    sendMessage("Tổng chi hiện tại là: " + totalexpenditure + ". Liên kết để theo dõi chi tiêu: <a href='Link đến bảng tính của bạn'>Sheets</a>")
   }
   
 } else
-sendMessage("Entered incorrect syntax" + "/collect, price " + "or " + "/spend, price " + " Link to track spending <a href='Link to your sheets'>Sheets này</a>?")
+sendMessage("Sai cú pháp nhập, vui lòng nhập: " + "/collect, giá trị " + "hoặc " + "/spend, giá trị " + "Liên kết để theo dõi chi tiêu <a href='Link đến bảng tính của bạn'>Sheets</a>")
 }
 ```
-## Expense Management Telegram Bot
+
+### Ảnh minh họa bot quản lý chi tiêu
 ![Output](/output.png)
+
+
 
