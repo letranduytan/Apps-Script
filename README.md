@@ -9,7 +9,7 @@
 <a href="https://instagram/duytan.hh" target="_blank"><img src="https://img.shields.io/badge/Instagram%20-%20%23FF9900"></a>
 </p>
 
-### Cài đặt Webhook
+## Cài đặt Webhook
 - Trước khi bắt đầu, hãy dán URL của ứng dụng web và chạy hàm `setWebhook`.
 
 **Phương thức:** `https://api.telegram.org/bot<token>/METHOD_NAME`
@@ -28,7 +28,7 @@ var chatid = 'điền chat id vào đây';
   3. Dán URL sau vào trình duyệt (với token bot của bạn): `https://api.telegram.org/bot<token>/getUpdates`.
   4. Lấy **chat ID** từ kết quả.
 
-### Kết nối Sheets & Telegram
+## Kết nối Sheets & Telegram
 
 #### Đặt Webhook
 ```javascript
@@ -96,7 +96,7 @@ sendMessage("Sai cú pháp nhập, vui lòng nhập: " + "/collect, giá trị "
 }
 ```
 
-### Ảnh minh họa bot quản lý chi tiêu
+## Ảnh minh họa bot quản lý chi tiêu
 ![Output](/output.png)
 
 
